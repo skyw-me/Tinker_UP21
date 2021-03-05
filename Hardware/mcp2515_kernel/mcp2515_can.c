@@ -27,9 +27,15 @@ static struct mcp251x_platform_data mcp251x_info = {
 
 static struct spi_board_info spi_device_info = {
     .modalias = "mcp2515",
+
+    // from up_board.c
+    .bus_num	= 2,
+
+    // mcp2515 max speed
+    .max_speed_hz = 8 * 1000 * 1000,
+
     .platform_data = &mcp251x_info,
     .irq = -1,
-    .max_speed_hz = 8 * 1000 * 1000,
 };
 
 static int __init mcp2515_init(void)
@@ -93,7 +99,12 @@ static int __init mcp2515_init(void)
   ret1 = gpio_to_irq(can1_int);
   printk("mcp2515_can: irq for pin %d is %d\n", can1_int, ret1);
   spi_device_info.irq = ret1;
+
+  // GPIO Chip select
+  // ref: https://github.com/pazeshun/sphand_ros/issues/15
+  // ref: https://e2e.ti.com/support/legacy_forums/embedded/linux/f/354/t/368940
   spi_device_info.chip_select = 1;
+  spi_device_info.controller_data = (void *)7;  // GPIO 7
 
   // create a new slave device, given the master and device info
   can1 = spi_new_device(master, &spi_device_info);
