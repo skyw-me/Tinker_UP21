@@ -6,8 +6,8 @@
 
 #include "mcp251x.h"
 
-int can0_int = 27;
-int can1_int = 22;
+int can0_int = 23;
+int can1_int = 25;
 
 // module_param(busnum, int, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 // MODULE_PARM_DESC(busnum, "busnum of spi bus to use");
