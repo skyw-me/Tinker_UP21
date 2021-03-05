@@ -1,10 +1,9 @@
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/spi/spi.h>
+#include <linux/can/platform/mcp251x.h>
 #include <linux/gpio.h>
 #include <linux/interrupt.h>
-
-#include "mcp251x.h"
 
 int can0_int = 23;
 int can1_int = 25;
