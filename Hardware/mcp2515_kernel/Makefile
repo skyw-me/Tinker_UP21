@@ -6,15 +6,21 @@ ifneq ($(KERNELRELEASE),)
 # Otherwise we were called directly from the command
 # line; invoke the kernel build system.
 else
-
 	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 	PWD  := $(shell pwd)
 
-default: clean
-	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
-
+default: clean build sign
+	
 clean:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) clean
+
+build:
+	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+
+sign:
+	/usr/src/linux-headers-$(shell uname -r)/scripts/sign-file sha256 \
+                                mcp2515_sign_key.priv mcp2515_sign_key.der \
+								mcp2515_can.ko
 
 install: default
 	cp mcp2515_can.ko /lib/modules/$(shell uname -r)/kernel/drivers/platform/x86
