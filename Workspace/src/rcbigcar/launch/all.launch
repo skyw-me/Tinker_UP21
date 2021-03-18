@@ -1,0 +1,14 @@
+<launch>
+    <arg name="is_debug" default="false" />
+
+    <!-- Chassis controller -->
+    <node 
+        name="robot"
+        pkg="rcbigcar"
+        type="robot"
+        respawn="true"
+        clear_params="true"
+    >
+        <param name="IsDebug" value="$(arg is_debug)" />
+    </node>
+</launch>
