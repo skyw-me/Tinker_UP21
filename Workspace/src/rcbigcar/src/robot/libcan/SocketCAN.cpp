@@ -10,7 +10,7 @@
 #include <stdio.h>
 // strncpy
 #include <string.h>
-// close
+// close sleep
 #include <unistd.h>
 // socket
 #include <sys/socket.h>
@@ -93,9 +93,12 @@ void SocketCAN::open(const char *interface)
 
 void SocketCAN::close()
 {
+    printf("Waiting for receiver thread to terminate.\n");
+
     terminate_receiver_thread = true;
-    while (receiver_thread_running)
-        ;
+    while (receiver_thread_running) {
+        sleep(1);
+    }
 
     if (!is_open())
         return;
