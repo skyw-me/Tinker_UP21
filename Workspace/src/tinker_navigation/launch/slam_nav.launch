@@ -1,0 +1,17 @@
+<launch>
+    <!-- lidars -->
+    <node name="urg_front" pkg="urg_node" type="urg_node" output="screen" >
+        <param name="serial_port" type="str" value="/dev/hokuyo"/>
+
+        <remap from="/scan" to="/urg_scan_front" />
+        <param name="frame_id" type="str" value="urg_laser_front" />
+
+        <!-- UTM-30LX parameters (No Intensity Mode) -->
+        <!-- http://wiki.ros.org/urg_node -->
+        <param name="cluster" value="1" />
+        <param name="skip" value="1" />
+        <param name="intensity" value="false" />
+        <param name="angle_min" value="-2.2689" />
+        <param name="angle_max" value="2.2689" />
+    </node>
+</launch>
