@@ -77,6 +77,8 @@ generate_messages(
 generate_dynamic_reconfigure_options(
   cfg/ChassisConfig.cfg
   cfg/MotionConfig.cfg
+
+  cfg/TeleopConfig.cfg
 )
 
 ################################################
@@ -168,6 +170,14 @@ AUX_SOURCE_DIRECTORY(src/robot        ROBOT_SOURCES)
 add_executable(robot ${ROBOT_SOURCES} ${ROBOT_LIBCAN_SOURCES})
 target_link_libraries(robot ${catkin_LIBRARIES})
 add_dependencies(robot ${PROJECT_NAME}_gencfg)
+
+#teleop
+AUX_SOURCE_DIRECTORY(src/teleop        TELEOP_SOURCES)
+
+add_executable(teleop ${TELEOP_SOURCES})
+target_link_libraries(teleop ${catkin_LIBRARIES})
+add_dependencies(teleop ${PROJECT_NAME}_gencfg)
+
 
 #############
 ## Install ##
