@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="tinker">
+    <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0" />
+    </material>
+
+    <!-- base_link -->
+    <xacro:property name="stl_trans_xyz" value="0.32 0.3 -0.23" />
+    <xacro:property name="stl_rotate_rpy" value="0. 0. 3.1415926" />
+    <xacro:property name="stl_viz_scale" value="0.001 0.001 0.001" />
+    <link name="base_link">
+        <visual>
+            <origin xyz="${stl_trans_xyz}" rpy="${stl_rotate_rpy}" />
+            <geometry>
+                <mesh filename="package://tinker_description/meshes/tinker_base.stl" scale="${stl_viz_scale}" />
+            </geometry>
+            <material name="">
+                <color rgba="0.6 0.6 0.6 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="${stl_trans_xyz}" rpy="${stl_rotate_rpy}" />
+            <geometry>
+                <mesh filename="package://tinker_description/meshes/tinker_base.stl" scale="${stl_viz_scale}" />
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- laser -->
+    <xacro:property name="urg_front_trans_xyz" value="0.25 0. 0.25" />
+
+    <link name="urg_laser_front" />
+    <joint name="base_to_urg_front" type="fixed">
+        <parent link="base_link" />
+        <child link="urg_laser_front" />
+        <origin xyz="${urg_front_trans_xyz}" />
+    </joint>
+</robot>
