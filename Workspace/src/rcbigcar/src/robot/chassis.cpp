@@ -115,7 +115,7 @@ void Chassis::PublishPosition()
   odom_base_tf.setOrigin(tf::Vector3(x, y, 0));
   odom_base_tf.setRotation(tf::createQuaternionFromYaw(theta));
 
-  tf_pos_pub.sendTransform(tf::StampedTransform(odom_base_tf, ros::Time::now(), "odom", "base"));
+  tf_pos_pub.sendTransform(tf::StampedTransform(odom_base_tf, ros::Time::now(), "odom", "base_link"));
 }
 
 void Chassis::CallbackVelocity(const geometry_msgs::Twist::ConstPtr &twist)
