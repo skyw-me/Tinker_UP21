@@ -19,24 +19,24 @@ build:
 
 sign:
 	/usr/src/linux-headers-$(shell uname -r)/scripts/sign-file sha256 \
-                                mcp2515_sign_key.priv mcp2515_sign_key.der \
-								mcp2515_can.ko
+                                module_sign_key/mcp2515_sign_key.priv \
+                                module_sign_key/mcp2515_sign_key.der \
+				 mcp2515_can.ko
 
 install: default
 	cp mcp2515_can.ko /lib/modules/$(shell uname -r)/kernel/drivers/platform/x86
 	depmod -A
-	chmod +x mcp2515_can
-	cp mcp2515_can /etc/init.d/
-	ln -s /etc/init.d/mcp2515_can /etc/rc.d/rc3.d/Smcp2515_can || true  	
-	ln -s /etc/init.d/mcp2515_can /etc/rc.d/rc5.d/Smcp2515_can || true
-	modprobe mcp2515_can
+	
+	echo "mcp2515_can" >> /etc/modules
+
+	$(MAKE) clean
 
 uninstall:
 	modprobe -r mcp2515_can
 	rm -f /lib/modules/$(shell uname -r)/kernel/drivers/platform/x86/mcp2515_can.*
 	depmod -A
-	rm -f /etc/init.d/mcp2515_can
-	rm -f /etc/rc.d/rc3.d/Smcp2515_can
-	rm -f /etc/rc.d/rc5.d/Smcp2515_can
+	
+	sed -i '/mcp2515_can/d' /etc/modules
 
 endif
+
