@@ -22,7 +22,7 @@
             -configuration_directory $(find tinker_navigation)/config
             -configuration_basename backpack_2d.lua"
         output="screen">
-        <remap from="/scan" to="/urg_laser_front" />
+        <remap from="/scan" to="/urg_scan_front" />
     </node>
 
     <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
