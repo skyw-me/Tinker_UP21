@@ -1,4 +1,7 @@
 <launch>
+    <!-- urdf description -->
+    <include file="$(find tinker_description)/launch/publish_urdf.launch" />
+
     <!-- lidars -->
     <node name="urg_front" pkg="urg_node" type="urg_node" output="screen" >
         <param name="serial_port" type="str" value="/dev/hokuyo"/>
@@ -11,8 +14,9 @@
         <param name="cluster" value="1" />
         <param name="skip" value="1" />
         <param name="publish_intensity" value="false" />
-        <param name="angle_min" value="-2.2689" />
-        <param name="angle_max" value="2.2689" />
+        <!-- Only use front face 180 deg (not occuluded) -->
+        <param name="angle_min" value="-1.5707963" />
+        <param name="angle_max" value="1.5707963" />
     </node>
 
     <!-- cartographer -->
