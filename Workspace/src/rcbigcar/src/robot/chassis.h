@@ -50,7 +50,8 @@ private:
    * Handles
    */
   ros::Subscriber twist_sub;
-  tf::TransformBroadcaster tf_pos_pub;
+  ros::Publisher odom_pub;
+  tf::TransformBroadcaster tf_odom_pub;
 
   /*
   * Motor
@@ -63,6 +64,9 @@ private:
   */
   double x, y, theta;
   double last_position[4];
+
+  double vx_local, vy_local, vtheta_local;
+  ros::Time odom_last_time;
 
   /*
   * Debug

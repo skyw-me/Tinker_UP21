@@ -39,12 +39,17 @@ Chassis::Chassis()
 
   // Setup Comm
   twist_sub = node_priv.subscribe<geometry_msgs::Twist>("velocity", 10, &Chassis::CallbackVelocity, this);
+  odom_pub  = node_priv.advertise<nav_msgs::Odometry>("odom", 10);
 
+  // Setup Odometry
   x = y = theta = 0;
   for (int i = 0; i < 4; i++)
   {
     last_position[i] = motors[i]->getPosition();
   }
+
+  odom_last_time = ros::Time::now();
+  vx_local = vy_local = vtheta_local = 0;
 
   // Setup Watchdog
   motorWatchdog = ros::Time::now();
@@ -92,7 +97,7 @@ void Chassis::UpdateOdometry()
     last_position[id] = motors[id]->getPosition();
   }
 
-  //swap d[0] and d[1]
+  // swap d[0] and d[1]
   double k = CHASSIS_WHEEL_R / 4.0;
   double dx = k * (+d[0] - d[1] + d[2] - d[3]);
   double dy = k * (-d[0] - d[1] + d[2] + d[3]);
@@ -104,18 +109,49 @@ void Chassis::UpdateOdometry()
   theta += dtheta;
   theta = fmod(theta, 2 * M_PI);
 
+  // update velocity
+  double dt = (ros::Time::now() - odom_last_time).toSec();
+  odom_last_time = ros::Time::now();
+
+  vx_local = dx / dt;
+  vy_local = dy / dt;
+  vtheta_local = dtheta / dt;
+
   PublishPosition();
 }
 
 void Chassis::PublishPosition()
 {
+  // create quaternion from theta
+  tf::Quaternion yaw_q = tf::createQuaternionFromYaw(theta);
+
+  // publish odom message
+  nav_msgs::Odometry odom;
+  // init header
+  odom.header.frame_id = "odom";
+  odom.header.seq = 0;
+  odom.header.stamp = ros::Time::now();
+  odom.child_frame_id = "base_link";
+  // fill pose
+  odom.pose.pose.position.x = x;
+  odom.pose.pose.position.y = y;
+  odom.pose.pose.orientation.x = yaw_q.x();
+  odom.pose.pose.orientation.y = yaw_q.y();
+  odom.pose.pose.orientation.z = yaw_q.z();
+  odom.pose.pose.orientation.w = yaw_q.w();
+  // fill twist
+  odom.twist.twist.linear.x = vx_local;
+  odom.twist.twist.linear.y = vy_local;
+  odom.twist.twist.angular.z = vtheta_local;
+  odom_pub.publish(odom);
+
   // publish tf message
   tf::Transform odom_base_tf;
 
   odom_base_tf.setOrigin(tf::Vector3(x, y, 0));
-  odom_base_tf.setRotation(tf::createQuaternionFromYaw(theta));
+  odom_base_tf.setRotation(yaw_q);
 
-  tf_pos_pub.sendTransform(tf::StampedTransform(odom_base_tf, ros::Time::now(), "odom", "base_link"));
+  tf_odom_pub.sendTransform(tf::StampedTransform(odom_base_tf, ros::Time::now(), "odom", "base_link"));
 }
 
 void Chassis::CallbackVelocity(const geometry_msgs::Twist::ConstPtr &twist)
