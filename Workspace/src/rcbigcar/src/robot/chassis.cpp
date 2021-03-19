@@ -101,7 +101,7 @@ void Chassis::UpdateOdometry()
   double k = CHASSIS_WHEEL_R / 4.0;
   double dx = k * (+d[0] - d[1] + d[2] - d[3]);
   double dy = k * (-d[0] - d[1] + d[2] + d[3]);
-  double dtheta = 2 * k / (CHASSIS_LENGTH_A + CHASSIS_LENGTH_B) * (-d[0] - d[1] - d[2] - d[3]);
+  double dtheta = k / (CHASSIS_LENGTH_A + CHASSIS_LENGTH_B) * (-d[0] - d[1] - d[2] - d[3]);
 
   x += dx * cos(theta) - dy * sin(theta);
   y += dx * sin(theta) + dy * cos(theta);
