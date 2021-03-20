@@ -39,7 +39,7 @@ struct MotionMotor
  * Robot Hardware Config
  */
 
-#define ROBOT_SAMPLING_RATE 500
+#define ROBOT_SAMPLING_RATE 200
 
 #define HW_MOTOR_COUNT 8
 #define HW_CAN_MOTOR_ID_1 0x200
