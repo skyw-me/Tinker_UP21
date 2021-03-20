@@ -9,7 +9,7 @@ source "${WORKSPACE_PATH}/devel/setup.bash"
 
 # Set ROS Master and IP
 export ROS_MASTER_URI=http://localhost:11311
-export ROS_IP=$(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')
+export ROS_IP=`ip -f inet addr show enp1s0 | awk '/inet/ {print $2}' | cut -d/ -f1`
 
 # Setup CAN
 "${SCRIPT_PATH}/setup_can.sh"
