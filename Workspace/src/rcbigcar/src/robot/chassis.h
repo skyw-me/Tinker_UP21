@@ -68,6 +68,8 @@ private:
   double vx_local, vy_local, vtheta_local;
   ros::Time odom_last_time;
 
+  uint32_t odom_seq;
+
   /*
   * Debug
   */

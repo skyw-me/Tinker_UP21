@@ -51,6 +51,8 @@ Chassis::Chassis()
   odom_last_time = ros::Time::now();
   vx_local = vy_local = vtheta_local = 0;
 
+  odom_seq = 0;
+
   // Setup Watchdog
   motorWatchdog = ros::Time::now();
 
@@ -129,7 +131,7 @@ void Chassis::PublishPosition()
   nav_msgs::Odometry odom;
   // init header
   odom.header.frame_id = "odom";
-  odom.header.seq = 0;
+  odom.header.seq = ++odom_seq;
   odom.header.stamp = ros::Time::now();
   odom.child_frame_id = "base_link";
   // fill pose
