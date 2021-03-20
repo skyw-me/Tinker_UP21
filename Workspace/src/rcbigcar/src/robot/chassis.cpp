@@ -38,7 +38,7 @@ Chassis::Chassis()
   DynamicParamServer.setCallback(boost::bind(&Chassis::CallbackDynamicParam, this, _1, _2));
 
   // Setup Comm
-  twist_sub = node_priv.subscribe<geometry_msgs::Twist>("velocity", 10, &Chassis::CallbackVelocity, this);
+  twist_sub = node_priv.subscribe<geometry_msgs::Twist>("cmd_vel", 10, &Chassis::CallbackVelocity, this);
   odom_pub  = node_priv.advertise<nav_msgs::Odometry>("odom", 10);
 
   // Setup Odometry
