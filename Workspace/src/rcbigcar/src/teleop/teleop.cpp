@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 
     ros::NodeHandle nh;
 
-    twist_pub = nh.advertise<geometry_msgs::Twist>("velocity", 10);
+    twist_pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 10);
     joy_sub = nh.subscribe<sensor_msgs::Joy>("joy", 10, &callback_joy);
 
     // init twist
