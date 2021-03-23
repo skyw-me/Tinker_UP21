@@ -4,7 +4,7 @@
 
     <!-- lidars -->
     <node name="urg_front" pkg="urg_node" type="urg_node" output="screen" >
-        <param name="serial_port" type="str" value="/dev/hokuyo"/>
+        <param name="serial_port" type="str" value="/dev/hokuyo_front"/>
 
         <remap from="/scan" to="/urg_scan_front" />
         <param name="frame_id" type="str" value="urg_laser_front" />
@@ -23,7 +23,7 @@
     <!-- ref: https://readthedocs.org/projects/google-cartographer-ros/downloads/pdf/latest/ -->
     <node name="cartographer_node" pkg="cartographer_ros"
         type="cartographer_node" args="
-            -configuration_directory $(find tinker_navigation)/config
+            -configuration_directory $(find tinker_navigation)/config/slam
             -configuration_basename backpack_2d.lua"
         output="screen">
         <remap from="/scan" to="/urg_scan_front" />
