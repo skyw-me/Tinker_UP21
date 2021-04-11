@@ -9,6 +9,7 @@
 
 
 const double kWatchdogTimeout = 1.0;
+const double kDeactivationTimeout = 30.0;
 
 // dynamic reconfiguration
 rcbigcar::TeleopConfig config;
@@ -21,7 +22,8 @@ ros::Subscriber joy_sub;
 RampFilter ramp_filters[3];
 
 // twist
-geometry_msgs::Twist twist;
+geometry_msgs::Twist twist_target;
+
 bool twist_active = false;
 
 // watchdog
@@ -33,10 +35,9 @@ void callback_joy(const sensor_msgs::Joy::ConstPtr &joy)
     watchdog_last_time = ros::Time::now();
 
     // set speed
-    twist.angular.z = ramp_filters[0].filter(joy->axes[0] * config.MaxW, config.MaxW, config.MaxAccW);
-
-    twist.linear.x = ramp_filters[1].filter(joy->axes[4] * config.MaxX, config.MaxX, config.MaxAccX);
-    twist.linear.y = ramp_filters[2].filter(joy->axes[3] * config.MaxY, config.MaxY, config.MaxAccY);
+    twist_target.angular.z = joy->axes[0] * config.MaxW;
+    twist_target.linear.x = joy->axes[4] * config.MaxX;
+    twist_target.linear.y = joy->axes[3] * config.MaxY;
 
     // activate
     twist_active = true;
@@ -46,23 +47,24 @@ void callback_param( rcbigcar::TeleopConfig &_config, uint32_t level ) {
     config = _config;
 }
 
-void zero_velocity() {
-    twist.angular.x = 0;
-    twist.angular.y = 0;
-    twist.angular.z = 0;
+void zero_velocity(geometry_msgs::Twist &t) {
+    t.angular.x = 0;
+    t.angular.y = 0;
+    t.angular.z = 0;
 
-    twist.linear.x = 0;
-    twist.linear.y = 0;
-    twist.linear.z = 0;
+    t.linear.x = 0;
+    t.linear.y = 0;
+    t.linear.z = 0;
 }
 
 void update_watchdog() {
+    // stop robot
     if ((ros::Time::now() - watchdog_last_time).toSec() > kWatchdogTimeout) {
-        // stop robot
-        zero_velocity();
-        twist_pub.publish(twist);
+        zero_velocity(twist_target);
+    }
 
-        // deactivate
+    // deactivate
+    if ((ros::Time::now() - watchdog_last_time).toSec() > kDeactivationTimeout) {
         twist_active = false;
     }
 }
@@ -77,7 +79,7 @@ int main(int argc, char **argv)
     joy_sub = nh.subscribe<sensor_msgs::Joy>("joy", 10, &callback_joy);
 
     // init twist
-    zero_velocity();
+    zero_velocity(twist_target);
 
     // dynamic reconfigure
     dynamic_reconfigure::Server<rcbigcar::TeleopConfig> param_server;
@@ -92,6 +94,16 @@ int main(int argc, char **argv)
 
         // publish
         if (twist_active) {
+            // current twist
+            geometry_msgs::Twist twist;
+            zero_velocity(twist);
+
+            // update twist
+            twist.angular.z = ramp_filters[0].filter(twist_target.angular.z, config.MaxW, config.MaxAccW);
+            twist.linear.x = ramp_filters[1].filter(twist_target.angular.x, config.MaxX, config.MaxAccX);
+            twist.linear.y = ramp_filters[2].filter(twist_target.angular.y, config.MaxY, config.MaxAccY);
+
+            // publish
             twist_pub.publish(twist);
         }
 
