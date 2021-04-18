@@ -101,8 +101,8 @@ int main(int argc, char **argv)
 
             // update twist
             twist.angular.z = ramp_filters[0].filter(twist_target.angular.z, config.MaxW, config.MaxAccW);
-            twist.linear.x = ramp_filters[1].filter(twist_target.angular.x, config.MaxX, config.MaxAccX);
-            twist.linear.y = ramp_filters[2].filter(twist_target.angular.y, config.MaxY, config.MaxAccY);
+            twist.linear.x = ramp_filters[1].filter(twist_target.linear.x, config.MaxX, config.MaxAccX);
+            twist.linear.y = ramp_filters[2].filter(twist_target.linear.y, config.MaxY, config.MaxAccY);
 
             // publish
             twist_pub.publish(twist);
