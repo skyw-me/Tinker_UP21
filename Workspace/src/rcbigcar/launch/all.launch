@@ -11,4 +11,12 @@
     >
         <param name="IsDebug" value="$(arg is_debug)" />
     </node>
+
+    <!-- Chassis teleop -->
+    <node
+        name="teleop"
+        pkg="rcbigcar"
+        type="teleop"
+        respawn="true"
+        clear_params="true"></node>
 </launch>

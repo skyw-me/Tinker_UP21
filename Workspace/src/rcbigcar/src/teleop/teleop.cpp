@@ -35,9 +35,10 @@ void callback_joy(const sensor_msgs::Joy::ConstPtr &joy)
     watchdog_last_time = ros::Time::now();
 
     // set speed
+    // Logitech F710 Gamepad
     twist_target.angular.z = joy->axes[0] * config.MaxW;
-    twist_target.linear.x = joy->axes[4] * config.MaxX;
-    twist_target.linear.y = joy->axes[3] * config.MaxY;
+    twist_target.linear.x = joy->axes[3] * config.MaxX;
+    twist_target.linear.y = joy->axes[2] * config.MaxY;
 
     // activate
     twist_active = true;
