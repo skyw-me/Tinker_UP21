@@ -10,6 +10,12 @@ source "${WORKSPACE_PATH}/devel/setup.bash"
 # Set ROS Master and IP
 export ROS_MASTER_URI=http://localhost:11311
 export ROS_IP=`ip -f inet addr show enp1s0 | awk '/inet/ {print $2}' | cut -d/ -f1`
+# ROS IP Fallback to localhost
+[ -z "$ROS_IP" ] && export ROS_IP=127.0.0.1
+
+# Print IP
+echo "ROS Master URI: $ROS_MASTER_URI"
+echo "ROS IP: $ROS_IP"
 
 # Setup CAN
 "${SCRIPT_PATH}/setup_can.sh"
