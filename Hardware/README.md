@@ -72,10 +72,18 @@ sudo update-initramfs -u
 
 ## Install CAN Driver
 
+Disable original UPBoard SPI devices
+Edit /etc/default/grub, add following kernel command line parameters:
+```bash
+GRUB_CMDLINE_LINUX="up_board.spidev0=0 up_board.spidev1=0"
+```
+
+
 Install self-written MCP2515 CAN driver in this repo
 
 Go to Hardware/mcp2515_kernel folder, and execute:
 ```bash
+rm -r build
 sudo make install
 ```
 
