@@ -6,13 +6,13 @@ TebLocalPlannerROS:
 
   # robot
   max_vel_x: 0.48           # Measured (Physical Upper Bound)
-  max_vel_x_backwards: 0.48 # max_vel_x / 2 (do not run backward too fast)
+  max_vel_x_backwards: 0.24 # max_vel_x / 2 (do not run backward too fast)
   max_vel_theta: 1.11       # Measured
   acc_lim_x: 0.5
-  acc_lim_theta: 0.5
+  acc_lim_theta: 1.0
   footprint_model:
     type: "polygon"
-  vertices: [[0.225, 0.21], [0.225, -0.21], [-0.225, -0.21], [-0.225, 0.21]]
+    vertices: [[0.225, 0.21], [0.225, -0.21], [-0.225, -0.21], [-0.225, 0.21]]
 
   # robot - holonomic
   min_turning_radius: 0.0
@@ -22,4 +22,4 @@ TebLocalPlannerROS:
 
   # obstacle avoidance
   min_obstacle_dist: 0.2
-  inflation_dist: 0.6
+  inflation_dist: 0.4
