@@ -148,12 +148,12 @@ void Chassis::PublishPosition()
   odom_pub.publish(odom);
 
   // publish tf message
-  // tf::Transform odom_base_tf;
+  tf::Transform odom_base_tf;
 
-  // odom_base_tf.setOrigin(tf::Vector3(x, y, 0));
-  // odom_base_tf.setRotation(yaw_q);
+  odom_base_tf.setOrigin(tf::Vector3(x, y, 0));
+  odom_base_tf.setRotation(yaw_q);
 
-  // tf_odom_pub.sendTransform(tf::StampedTransform(odom_base_tf, ros::Time::now(), "odom", "base_link"));
+  tf_odom_pub.sendTransform(tf::StampedTransform(odom_base_tf, ros::Time::now(), "odom", "base_link"));
 }
 
 void Chassis::CallbackVelocity(const geometry_msgs::Twist::ConstPtr &twist)
