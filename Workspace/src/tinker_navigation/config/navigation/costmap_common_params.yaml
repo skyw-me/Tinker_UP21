@@ -1,15 +1,15 @@
 # Docs: http://wiki.ros.org/costmap_2d
 
 footprint: [[0.225, 0.21], [0.225, -0.21], [-0.225, -0.21], [-0.225, 0.21]]
+#footprint: [[2.25, 2.1], [2.25, -2.1], [-2.25, -2.1], [-2.25, 2.1]]
 
 transform_tolerance: 0.5
-map_type: costmap
 
 obstacle_layer:
  enabled: true
  obstacle_range: 3.0
  raytrace_range: 4.0
- inflation_radius: 0.2
+ inflation_radius: 0.5
  track_unknown_space: true
  combination_method: 1
 

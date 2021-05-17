@@ -5,7 +5,6 @@ local_costmap:
   robot_base_frame: base_link
   update_frequency: 5.0
   publish_frequency: 2.0
-  static_map: false
   rolling_window: true
 
   width: 5.0
@@ -14,4 +13,4 @@ local_costmap:
 
   plugins:
    - {name: static_layer,        type: "costmap_2d::StaticLayer"}
-   - {name: obstacle_layer,      type: "costmap_2d::ObstacleLayer"}
+   - {name: obstacle_layer,      type: "costmap_2d::VoxelLayer"}
