@@ -11,9 +11,6 @@
         <include file="$(find tinker_navigation)/static_maps/$(arg load_static_map)/locations.launch" />
     </group>
 
-    <!-- urdf description -->
-    <include file="$(find tinker_description)/launch/publish_urdf.launch" />
-
     <!-- lidars -->
     <node name="urg_front" pkg="urg_node" type="urg_node" output="screen" respawn="true" >
         <param name="serial_port" type="str" value="/dev/hokuyo_front"/>
