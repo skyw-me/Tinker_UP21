@@ -5,28 +5,25 @@ TebLocalPlannerROS:
   odom_topic: odom
   map_frame: /map
 
-  # dt - decrease
-  no_outer_iterations: 2
-  no_inner_iterations: 4
-  dt_ref: 0.3
-  dt_hysteresis: 0.1
-
   # robot
-  max_vel_x: 0.4           # Measured (Physical Upper Bound)
-  max_vel_x_backwards: 0.0  # max_vel_x / 2 (do not run backward too fast)
-  max_vel_theta: 0.8       # Measured
-  acc_lim_x: 0.5
-  acc_lim_theta: 0.7
+  max_vel_x: 0.45             # Measured (Physical Upper Bound)
+  max_vel_x_backwards: 0.225  # max_vel_x / 2 (do not run backward too fast)
+  max_vel_theta: 1.0         # Measured
+  acc_lim_x: 0.45
+  acc_lim_theta: 1.0
   footprint_model:
     type: "polygon"
     vertices: [[0.225, 0.21], [0.225, -0.21], [-0.225, -0.21], [-0.225, 0.21]]
 
   # robot - holonomic
   min_turning_radius: 0.0
-  max_vel_y: 0.28            # Measured (Physical Upper Bound)
-  acc_lim_y: 0.5
-  weight_kinematics_nh: 100.0  # Reduce to tune (0.0 Smaller <-- holonomic -- Medium -- car-like --> Large 1000.0)
+  max_vel_y: 0.31            # Measured (Physical Upper Bound)
+  acc_lim_y: 0.31
+  weight_kinematics_nh: 10.0  # Reduce to tune (0.0 Smaller <-- holonomic -- Medium -- car-like --> Large 1000.0)
 
   # obstacle avoidance
   min_obstacle_dist: 0.15
   inflation_dist: 0.4
+
+  # penalize backward driving
+  weight_kinematics_forward_drive: 10.0
