@@ -1,14 +1,14 @@
 <launch>
     <!-- static map -->
-    <arg name="cartographer_arguments" default="" />
     <arg name="load_static_map" default="" />
-    <arg name="load_map_locations" default="" />
 
-    <group if="$(arg load_static_map)">
-        <arg name="cartographer_arguments" value="-load_state_filename $(arg load_static_map)" />
-    </group>
-    <group if="$(arg load_map_locations)">
-        <include file="$(find tinker_navigation)/launch/map_locations/$(arg load_map_locations)" />
+    <!-- set static map args -->
+    <arg if="$(eval load_static_map != '')" name="cartographer_arguments" value="-load_state_filename $(find tinker_navigation)/static_maps/$(arg load_static_map)/map.pbstream" />
+    <arg if="$(eval load_static_map == '')" name="cartographer_arguments" value="" />
+
+    <!-- load static map locations -->
+    <group if="$(eval load_static_map != '')">
+        <include file="$(find tinker_navigation)/static_maps/$(arg load_static_map)/locations.launch" />
     </group>
 
     <!-- urdf description -->
