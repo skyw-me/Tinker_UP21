@@ -1,4 +1,16 @@
 <launch>
+    <!-- static map -->
+    <arg name="cartographer_arguments" default="" />
+    <arg name="load_static_map" default="" />
+    <arg name="load_map_locations" default="" />
+
+    <group if="$(arg load_static_map)">
+        <arg name="cartographer_arguments" value="-load_state_filename $(arg load_static_map)" />
+    </group>
+    <group if="$(arg load_map_locations)">
+        <include file="$(find tinker_navigation)/launch/map_locations/$(arg load_map_locations)" />
+    </group>
+
     <!-- urdf description -->
     <include file="$(find tinker_description)/launch/publish_urdf.launch" />
 
@@ -24,7 +36,8 @@
     <node name="cartographer_node" pkg="cartographer_ros"
         type="cartographer_node" args="
             -configuration_directory $(find tinker_navigation)/config/slam
-            -configuration_basename backpack_2d.lua"
+            -configuration_basename backpack_2d.lua
+            $(arg cartographer_arguments)"
         output="screen" respawn="true">
         <remap from="/scan" to="/urg_scan_front" />
     </node>

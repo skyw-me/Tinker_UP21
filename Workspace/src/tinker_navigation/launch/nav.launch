@@ -1,6 +1,6 @@
 <launch>
     <!-- slam stack -->
-    <include file="$(find tinker_navigation)/launch/slam.launch" />
+    <include file="$(find tinker_navigation)/launch/slam.launch" pass_all_args="true" />
 
     <!-- move_base -->
     <node pkg="move_base" type="move_base" name="move_base" output="screen" respawn="true">
