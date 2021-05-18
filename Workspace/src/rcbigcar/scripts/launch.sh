@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Pre-startup delay
+PRE_STARTUP_DELAY=10
+sleep "$PRE_STARTUP_DELAY"
+
 # Load ROS Environment
 SCRIPT_PATH=$(dirname `realpath "$0"`)
 WORKSPACE_PATH=$(readlink --canonicalize "$SCRIPT_PATH/../../../")
