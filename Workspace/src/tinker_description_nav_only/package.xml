@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>tinker_description</name>
+  <name>tinker_description_nav_only</name>
   <version>0.0.0</version>
-  <description>The tinker_description package</description>
+  <description>The tinker_description_nav_only package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

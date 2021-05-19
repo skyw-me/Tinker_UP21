@@ -1,4 +1,7 @@
 <launch>
+    <!-- load static map arg (pass) -->
+    <arg name="load_static_map" default="" />
+
     <!-- slam stack -->
     <include file="$(find tinker_navigation)/launch/slam.launch" pass_all_args="true" />
 
