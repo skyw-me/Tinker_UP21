@@ -1,3 +1,5 @@
+#!/bin/python3
+
 import rospy
 from geometry_msgs.msg import PoseStamped, PointStamped, Quaternion
 from nav_msgs.srv import GetPlan
@@ -8,8 +10,9 @@ import numpy as np
 class Tracker:
     # parameters
     # follower
-    MINIMAL_DISTANCE = 1.0
+    MINIMAL_DISTANCE = 0.5
     HOP_DISTANCE = 0.1
+    START_HOP = 0.2
     YAW_RANGE = np.pi / 2  # +/- 90 deg
 
     # plan pruner
@@ -25,7 +28,7 @@ class Tracker:
         self.goal_publisher = rospy.Publisher("move_base_simple/goal", PoseStamped, queue_size=1)
 
     def find_target(self, target_in_map: PointStamped):
-        dx = 0
+        dx = self.START_HOP
         while True:
             dx += self.HOP_DISTANCE
             print("dx = {}".format(dx))
