@@ -19,4 +19,12 @@
         type="teleop"
         respawn="true"
         clear_params="true"></node>
+    <node
+        name="joy_node"
+        pkg="joy"
+        type="joy_node"
+        respawn="true"
+        clear_params="true">
+        <param name="autorepeat_rate" value="50" />
+    </node>
 </launch>
